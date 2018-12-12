@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.travelapi.api.mapper.TravelUserHobbyMapper">
+  <resultMap id="BaseResultMap" type="com.travel.travelapi.api.entity.TravelUserHobby">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="hobby_id" jdbcType="VARCHAR" property="hobbyId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, hobby_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from travel_user_hobby
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from travel_user_hobby
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByUserId">
+     delete from travel_user_hobby
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.travel.travelapi.api.entity.TravelUserHobby">
+    insert into travel_user_hobby (id, user_id, hobby_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{hobbyId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.travel.travelapi.api.entity.TravelUserHobby">
+    insert into travel_user_hobby
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="hobbyId != null">
+        hobby_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbyId != null">
+        #{hobbyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.travel.travelapi.api.entity.TravelUserHobby">
+    update travel_user_hobby
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hobbyId != null">
+        hobby_id = #{hobbyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.travel.travelapi.api.entity.TravelUserHobby">
+    update travel_user_hobby
+    set user_id = #{userId,jdbcType=VARCHAR},
+      hobby_id = #{hobbyId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

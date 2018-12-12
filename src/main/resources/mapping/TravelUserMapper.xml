@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.travelapi.api.mapper.TravelUserMapper">
+  <resultMap id="BaseResultMap" type="com.travel.travelapi.api.entityDo.TravelUserDo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
+    <result column="wei_bo" jdbcType="VARCHAR" property="weiBo" />
+    <result column="we_chat" jdbcType="VARCHAR" property="weChat" />
+    <result column="qq_number_name" jdbcType="VARCHAR" property="qqNumberName" />
+    <result column="wei_bo_name" jdbcType="VARCHAR" property="weiBoName" />
+    <result column="we_chat_name" jdbcType="VARCHAR" property="weChatName" />
+    <result column="head_pic" jdbcType="VARCHAR" property="headPic" />
+    <result column="back_pic" jdbcType="VARCHAR" property="backPic" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="id_front" jdbcType="VARCHAR" property="idFront" />
+    <result column="id_behind" jdbcType="VARCHAR" property="idBehind" />
+    <result column="true_name" jdbcType="VARCHAR" property="trueName" />
+    <result column="is_pass" jdbcType="INTEGER" property="isPass" />
+    <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mobile_phone, password, qq_number, wei_bo, we_chat, qq_number_name, wei_bo_name, 
+    we_chat_name, head_pic, back_pic, email, id_front, id_behind, true_name, is_pass,id_card_no
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from travel_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from travel_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.travel.travelapi.api.entity.TravelUser">
+    insert into travel_user (id, mobile_phone, password, 
+      qq_number, wei_bo, we_chat, 
+      qq_number_name, wei_bo_name, we_chat_name, 
+      head_pic, back_pic, email, 
+      id_front, id_behind, true_name, 
+      is_pass,id_card_no)
+    values (#{id,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{qqNumber,jdbcType=VARCHAR}, #{weiBo,jdbcType=VARCHAR}, #{weChat,jdbcType=VARCHAR}, 
+      #{qqNumberName,jdbcType=VARCHAR}, #{weiBoName,jdbcType=VARCHAR}, #{weChatName,jdbcType=VARCHAR}, 
+      #{headPic,jdbcType=VARCHAR}, #{backPic,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{idFront,jdbcType=VARCHAR}, #{idBehind,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, 
+      #{isPass,jdbcType=INTEGER}, #{idCardNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.travel.travelapi.api.entity.TravelUser">
+    insert into travel_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mobilePhone != null">
+        mobile_phone,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="qqNumber != null">
+        qq_number,
+      </if>
+      <if test="weiBo != null">
+        wei_bo,
+      </if>
+      <if test="weChat != null">
+        we_chat,
+      </if>
+      <if test="qqNumberName != null">
+        qq_number_name,
+      </if>
+      <if test="weiBoName != null">
+        wei_bo_name,
+      </if>
+      <if test="weChatName != null">
+        we_chat_name,
+      </if>
+      <if test="headPic != null">
+        head_pic,
+      </if>
+      <if test="backPic != null">
+        back_pic,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="idFront != null">
+        id_front,
+      </if>
+      <if test="idBehind != null">
+        id_behind,
+      </if>
+      <if test="trueName != null">
+        true_name,
+      </if>
+      <if test="isPass != null">
+        is_pass,
+      </if>
+      <if test="idCardNo != null">
+        id_card_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null">
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNumber != null">
+        #{qqNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="weiBo != null">
+        #{weiBo,jdbcType=VARCHAR},
+      </if>
+      <if test="weChat != null">
+        #{weChat,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNumberName != null">
+        #{qqNumberName,jdbcType=VARCHAR},
+      </if>
+      <if test="weiBoName != null">
+        #{weiBoName,jdbcType=VARCHAR},
+      </if>
+      <if test="weChatName != null">
+        #{weChatName,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null">
+        #{headPic,jdbcType=VARCHAR},
+      </if>
+      <if test="backPic != null">
+        #{backPic,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="idFront != null">
+        #{idFront,jdbcType=VARCHAR},
+      </if>
+      <if test="idBehind != null">
+        #{idBehind,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="isPass != null">
+        #{isPass,jdbcType=INTEGER},
+      </if>
+      <if test="id_card_no != null">
+        #{idCardNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.travel.travelapi.api.entity.TravelUser">
+    update travel_user
+    <set>
+      <if test="mobilePhone != null">
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNumber != null">
+        qq_number = #{qqNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="weiBo != null">
+        wei_bo = #{weiBo,jdbcType=VARCHAR},
+      </if>
+      <if test="weChat != null">
+        we_chat = #{weChat,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNumberName != null">
+        qq_number_name = #{qqNumberName,jdbcType=VARCHAR},
+      </if>
+      <if test="weiBoName != null">
+        wei_bo_name = #{weiBoName,jdbcType=VARCHAR},
+      </if>
+      <if test="weChatName != null">
+        we_chat_name = #{weChatName,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null">
+        head_pic = #{headPic,jdbcType=VARCHAR},
+      </if>
+      <if test="backPic != null">
+        back_pic = #{backPic,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="idFront != null">
+        id_front = #{idFront,jdbcType=VARCHAR},
+      </if>
+      <if test="idBehind != null">
+        id_behind = #{idBehind,jdbcType=VARCHAR},
+      </if>
+      <if test="trueName != null">
+        true_name = #{trueName,jdbcType=VARCHAR},
+      </if>
+      <if test="isPass != null">
+        is_pass = #{isPass,jdbcType=INTEGER},
+      </if>
+      <if test="idCardNo != null">
+        id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.travel.travelapi.api.entity.TravelUser">
+    update travel_user
+    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      qq_number = #{qqNumber,jdbcType=VARCHAR},
+      wei_bo = #{weiBo,jdbcType=VARCHAR},
+      we_chat = #{weChat,jdbcType=VARCHAR},
+      qq_number_name = #{qqNumberName,jdbcType=VARCHAR},
+      wei_bo_name = #{weiBoName,jdbcType=VARCHAR},
+      we_chat_name = #{weChatName,jdbcType=VARCHAR},
+      head_pic = #{headPic,jdbcType=VARCHAR},
+      back_pic = #{backPic,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      id_front = #{idFront,jdbcType=VARCHAR},
+      id_behind = #{idBehind,jdbcType=VARCHAR},
+      true_name = #{trueName,jdbcType=VARCHAR},
+      is_pass = #{isPass,jdbcType=INTEGER},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--根据手机号或者邮箱查询用户-->
+  <select id="selectUserByPhoneEmail" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from travel_user
+    where phone = #{mobile,jdbcType=VARCHAR} or email=#{email}
+  </select>
+  <!--用户登录-->
+  <select id="userLogin" parameterType="com.travel.travelapi.api.entityDo.TravelUserDo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from travel_user
+    where 1=1 
+    <choose>
+      <when test="type == 2">
+        and mobile_phone=#{mobilePhone}
+      </when>
+      <when test="type == 3">
+        and we_chat = #{weChat,jdbcType=VARCHAR}
+      </when>
+      <when test="type == 4">
+        and qq_number = #{qqNumber,jdbcType=VARCHAR}
+      </when>
+      <when test="type == 5">
+        and wei_bo = #{weiBo,jdbcType=VARCHAR}
+      </when>
+      <when test="type == 6">
+        and email = #{email,jdbcType=VARCHAR}
+      </when>
+      <otherwise>
+        and 1=2
+      </otherwise>
+    </choose>
+
+  </select>
+</mapper>

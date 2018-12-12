@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.travelapi.api.mapper.TravelHourseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.travel.travelapi.api.entityDo.TravelHourseInfoDo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="hourse_type_name" jdbcType="VARCHAR" property="hourseTypeName" />
+    <result column="hourse_type_detail_name" jdbcType="VARCHAR" property="hourseTypeDetailName" />
+    <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="county_name" jdbcType="VARCHAR" property="countyName" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="room_person_num" jdbcType="INTEGER" property="roomPersonNum" />
+    <result column="bedroom_num" jdbcType="INTEGER" property="bedroomNum" />
+    <result column="bed_num" jdbcType="INTEGER" property="bedNum" />
+    <result column="bathroom_num" jdbcType="INTEGER" property="bathroomNum" />
+    <result column="check_in_time"  property="checkInTime" />
+    <result column="check_out_time"   property="checkOutTime" />
+    <result column="hourse_image" property="hourseImage"/>
+    <result column="price" property="price"/>
+    <result column="evaluateNum" property="evaluateNum"/>
+    <result column="status" property="status"/>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.travel.travelapi.api.entityDo.TravelHourseInfoWithBLOBsDo">
+    <result column="hourse_detail" jdbcType="LONGVARCHAR" property="hourseDetail" />
+    <result column="rule_of_unsubscribe" jdbcType="LONGVARCHAR" property="ruleOfUnsubscribe" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    hi.id, hi.user_id, hi.hourse_type_name, hi.hourse_type_detail_name, hi.country_name, hi.province_name,
+    hi.city_name, hi.county_name, hi.address, hi.room_person_num, hi.bedroom_num, hi.bed_num, hi.bathroom_num,
+    hi.create_time, hi.update_time, hi.status,
+     DATE_FORMAT(hi.check_in_time,'%H:%i') check_in_time
+    , DATE_FORMAT(hi.check_out_time,'%H:%i') check_out_time,hi.hourse_image
+  </sql>
+  <sql id="Blob_Column_List">
+    hi.hourse_detail, hi.rule_of_unsubscribe
+  </sql>
+  <!--我的心愿单列表-->
+  <select id="selectMyFavoriteHourseByPage" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,cp.price,0 evaluateNum
+    from travel_user_favorite uf inner join travel_hourse_info hi
+    on uf.hourse_info_id=hi.id and uf.user_id=hi.user_id
+    left join travel_hourse_calendar_price cp on cp.hourse_info_id = uf.hourse_info_id
+    where uf.user_id=#{userId}
+    order by uf.create_time desc
+  </select>
+  <select id="selectMyHourseListByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,cp.price
+    from travel_hourse_info hi
+    left join travel_hourse_calendar_price cp on cp.hourse_info_id = hi.id
+    where hi.user_id=#{userId}
+     <if test="status != 2">
+       and hi.status=#{status}
+     </if>
+    order by hi.create_time desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from travel_hourse_info hi
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from travel_hourse_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.travel.travelapi.api.entity.TravelHourseInfoWithBLOBs">
+    insert into travel_hourse_info (id, user_id, hourse_type_name, 
+      hourse_type_detail_name, country_name, province_name, 
+      city_name, county_name, address, 
+      room_person_num, bedroom_num, bed_num, 
+      bathroom_num, create_time, update_time, 
+      status, check_in_time, check_out_time,
+      hourse_image,
+      hourse_detail, rule_of_unsubscribe
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{hourseTypeName,jdbcType=VARCHAR}, 
+      #{hourseTypeDetailName,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityName,jdbcType=VARCHAR}, #{countyName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{roomPersonNum,jdbcType=INTEGER}, #{bedroomNum,jdbcType=INTEGER}, #{bedNum,jdbcType=INTEGER}, 
+      #{bathroomNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{checkInTime,jdbcType=TIME}, #{checkOutTime,jdbcType=TIME},
+       #{hourseImage,jdbcType=VARCHAR},
+      #{hourseDetail,jdbcType=LONGVARCHAR}, #{ruleOfUnsubscribe,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.travel.travelapi.api.entity.TravelHourseInfoWithBLOBs">
+    insert into travel_hourse_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="hourseTypeName != null">
+        hourse_type_name,
+      </if>
+      <if test="hourseTypeDetailName != null">
+        hourse_type_detail_name,
+      </if>
+      <if test="countryName != null">
+        country_name,
+      </if>
+      <if test="provinceName != null">
+        province_name,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="countyName != null">
+        county_name,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="roomPersonNum != null">
+        room_person_num,
+      </if>
+      <if test="bedroomNum != null">
+        bedroom_num,
+      </if>
+      <if test="bedNum != null">
+        bed_num,
+      </if>
+      <if test="bathroomNum != null">
+        bathroom_num,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="checkInTime != null">
+        check_in_time,
+      </if>
+      <if test="checkOutTime != null">
+        check_out_time,
+      </if>
+      <if test="hourseDetail != null">
+        hourse_detail,
+      </if>
+      <if test="ruleOfUnsubscribe != null">
+        rule_of_unsubscribe,
+      </if>
+      <if test="hourseImage != null">
+        hourse_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseTypeName != null">
+        #{hourseTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseTypeDetailName != null">
+        #{hourseTypeDetailName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null">
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="countyName != null">
+        #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="roomPersonNum != null">
+        #{roomPersonNum,jdbcType=INTEGER},
+      </if>
+      <if test="bedroomNum != null">
+        #{bedroomNum,jdbcType=INTEGER},
+      </if>
+      <if test="bedNum != null">
+        #{bedNum,jdbcType=INTEGER},
+      </if>
+      <if test="bathroomNum != null">
+        #{bathroomNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="checkInTime != null">
+        #{checkInTime,jdbcType=TIME},
+      </if>
+      <if test="checkOutTime != null">
+        #{checkOutTime,jdbcType=TIME},
+      </if>
+      <if test="hourseDetail != null">
+        #{hourseDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ruleOfUnsubscribe != null">
+        #{ruleOfUnsubscribe,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="hourseImage != null">
+        #{hourseImage},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.travel.travelapi.api.entity.TravelHourseInfoWithBLOBs">
+    update travel_hourse_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseTypeName != null">
+        hourse_type_name = #{hourseTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseTypeDetailName != null">
+        hourse_type_detail_name = #{hourseTypeDetailName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        country_name = #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null">
+        province_name = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="countyName != null">
+        county_name = #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="roomPersonNum != null">
+        room_person_num = #{roomPersonNum,jdbcType=INTEGER},
+      </if>
+      <if test="bedroomNum != null">
+        bedroom_num = #{bedroomNum,jdbcType=INTEGER},
+      </if>
+      <if test="bedNum != null">
+        bed_num = #{bedNum,jdbcType=INTEGER},
+      </if>
+      <if test="bathroomNum != null">
+        bathroom_num = #{bathroomNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="checkInTime != null">
+        check_in_time = #{checkInTime,jdbcType=TIME},
+      </if>
+      <if test="checkOutTime != null">
+        check_out_time = #{checkOutTime,jdbcType=TIME},
+      </if>
+      <if test="hourseDetail != null">
+        hourse_detail = #{hourseDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ruleOfUnsubscribe != null">
+        rule_of_unsubscribe = #{ruleOfUnsubscribe,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="hourseImage != null">
+        hourse_mage = #{hourseImage},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.travel.travelapi.api.entity.TravelHourseInfoWithBLOBs">
+    update travel_hourse_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      hourse_type_name = #{hourseTypeName,jdbcType=VARCHAR},
+      hourse_type_detail_name = #{hourseTypeDetailName,jdbcType=VARCHAR},
+      country_name = #{countryName,jdbcType=VARCHAR},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      county_name = #{countyName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      room_person_num = #{roomPersonNum,jdbcType=INTEGER},
+      bedroom_num = #{bedroomNum,jdbcType=INTEGER},
+      bed_num = #{bedNum,jdbcType=INTEGER},
+      bathroom_num = #{bathroomNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      check_in_time = #{checkInTime,jdbcType=TIME},
+      check_out_time = #{checkOutTime,jdbcType=TIME},
+      hourse_detail = #{hourseDetail,jdbcType=LONGVARCHAR},
+      rule_of_unsubscribe = #{ruleOfUnsubscribe,jdbcType=LONGVARCHAR},
+       hourse_mage = #{hourseImage}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.travel.travelapi.api.entity.TravelHourseInfo">
+    update travel_hourse_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      hourse_type_name = #{hourseTypeName,jdbcType=VARCHAR},
+      hourse_type_detail_name = #{hourseTypeDetailName,jdbcType=VARCHAR},
+      country_name = #{countryName,jdbcType=VARCHAR},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      county_name = #{countyName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      room_person_num = #{roomPersonNum,jdbcType=INTEGER},
+      bedroom_num = #{bedroomNum,jdbcType=INTEGER},
+      bed_num = #{bedNum,jdbcType=INTEGER},
+      bathroom_num = #{bathroomNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      check_in_time = #{checkInTime,jdbcType=TIME},
+      check_out_time = #{checkOutTime,jdbcType=TIME},
+       hourse_mage = #{hourseImage}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.travelapi.api.mapper.TravelHourseImgMapper">
+  <resultMap id="BaseResultMap" type="com.travel.travelapi.api.entity.TravelHourseImg">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="hourse_info_id" jdbcType="VARCHAR" property="hourseInfoId" />
+    <result column="hourse_img_path" jdbcType="VARCHAR" property="hourseImgPath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hourse_info_id, hourse_img_path
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from travel_hourse_img
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from travel_hourse_img
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.travel.travelapi.api.entity.TravelHourseImg">
+    insert into travel_hourse_img (id, hourse_info_id, hourse_img_path
+      )
+    values (#{id,jdbcType=VARCHAR}, #{hourseInfoId,jdbcType=VARCHAR}, #{hourseImgPath,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.travel.travelapi.api.entity.TravelHourseImg">
+    insert into travel_hourse_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hourseInfoId != null">
+        hourse_info_id,
+      </if>
+      <if test="hourseImgPath != null">
+        hourse_img_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseInfoId != null">
+        #{hourseInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseImgPath != null">
+        #{hourseImgPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.travel.travelapi.api.entity.TravelHourseImg">
+    update travel_hourse_img
+    <set>
+      <if test="hourseInfoId != null">
+        hourse_info_id = #{hourseInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="hourseImgPath != null">
+        hourse_img_path = #{hourseImgPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.travel.travelapi.api.entity.TravelHourseImg">
+    update travel_hourse_img
+    set hourse_info_id = #{hourseInfoId,jdbcType=VARCHAR},
+      hourse_img_path = #{hourseImgPath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
